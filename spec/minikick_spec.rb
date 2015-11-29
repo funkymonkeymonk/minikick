@@ -58,6 +58,18 @@ describe Minikick do
       let(:result) { "#{user_name} backed project #{project_name} for $#{backing_amount}.\n" }
       specify { expect { subject.back user_name, project_name, credit_card_number, backing_amount }.to output(result).to_stdout }
     end
+
+    context "when backing amount is invalid" do
+      let(:result) { "Invalid backing amount\n" \
+                     "Backing amounts should only contain only dollars and cents\n" \
+                     "and should not contain a dollar sign($).\n" }
+
+      backing_amounts = ["10.1.1", 50.111, "$1001.11"]
+
+      backing_amounts.each do |backing_amount|
+        specify { expect { subject.back user_name, project_name, credit_card_number, backing_amount }.to output(result).to_stdout }
+      end
+    end
   end
 
   describe "#list" do

@@ -5,7 +5,7 @@ def project_name_valid?(project_name)
   project_name.to_s =~ project_name_regex
 end
 
-def target_amount_valid?(target_amount)
+def cash_amount_valid?(target_amount)
   target_amount_regex = /\A\d+.?\d{0,2}\z/
   target_amount.to_s =~ target_amount_regex
 end
@@ -23,7 +23,7 @@ class Minikick < Thor
 
     if !project_name_valid?(project_name)
       puts(project_name_rejected)
-    elsif !target_amount_valid?(target_amount)
+    elsif !cash_amount_valid?(target_amount)
       puts(target_amount_rejected)
     else
       puts("Added #{project_name} project with target of $#{target_amount}.")
@@ -32,7 +32,15 @@ class Minikick < Thor
 
   desc "back USER_NAME PROJECT CREDIT_CARD_NUMBER BACKING_AMOUNT", "Back a project"
   def back(user_name, project_name, credit_card_number, backing_amount)
-    puts("#{user_name} backed project #{project_name} for $#{backing_amount}.")
+    backing_amount_rejected = "Invalid backing amount\n" \
+                              "Backing amounts should only contain only dollars and cents\n" \
+                              "and should not contain a dollar sign($).\n"
+
+    if !cash_amount_valid?(backing_amount)
+      puts(backing_amount_rejected)
+    else
+      puts("#{user_name} backed project #{project_name} for $#{backing_amount}.")
+    end
   end
 
   desc "list PROJECT", "List a projects backers and backed amounts"
