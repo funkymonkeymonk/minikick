@@ -59,6 +59,32 @@ describe Minikick do
       specify { expect { subject.back user_name, project_name, credit_card_number, backing_amount }.to output(result).to_stdout }
     end
 
+    context "when user name is invalid" do
+      let(:result) { "Invalid user name\n" \
+                     "User names should only contain only alphanumberic characters\n" \
+                     "and be no shorter than 4 characters but no longer than 20 characters.\n" }
+
+      user_names = ["*light*bright", "abcdefghijklmnopqrstuvwxyz", "hod"]
+
+      user_names.each do |user_name|
+        specify { expect { subject.back user_name, project_name, credit_card_number, backing_amount }.to output(result).to_stdout }
+      end
+    end
+
+    context "when credit card number is invalid" do
+      let(:result) { "Invalid credit card number\n" \
+                     "Credit card numbers must be less than characters.\n" \
+                     "Credit card numbers must be numeric.\n" \
+                     "Card numbers must be validated using Luhn-10.\n" \
+                     "Cards that have already been added will display an error.\n"}
+
+      credit_card_numbers = [41111111111111111111, "sunshine", 123456789]
+
+      credit_card_numbers.each do |credit_card_number|
+        specify { expect { subject.back user_name, project_name, credit_card_number, backing_amount }.to output(result).to_stdout }
+      end
+    end
+
     context "when backing amount is invalid" do
       let(:result) { "Invalid backing amount\n" \
                      "Backing amounts should only contain only dollars and cents\n" \

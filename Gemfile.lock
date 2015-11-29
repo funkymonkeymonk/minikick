@@ -7,6 +7,7 @@ GEM
     gemrat (0.4.6)
       colored (= 1.2)
     json (1.8.3)
+    luhn (1.0.2)
     rspec (3.4.0)
       rspec-core (~> 3.4.0)
       rspec-expectations (~> 3.4.0)
@@ -32,6 +33,7 @@ PLATFORMS
 
 DEPENDENCIES
   gemrat (= 0.4.6)
+  luhn (= 1.0.2)
   rspec (= 3.4.0)
   simplecov (= 0.10.0)
   thor (= 0.19.1)
