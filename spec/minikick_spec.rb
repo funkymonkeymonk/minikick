@@ -25,9 +25,7 @@ describe Minikick do
     end
 
     context "when project name is invalid" do
-      let(:result) { "Invalid project name\n" \
-                     "Project names should only contain only alphanumberic characters\n" \
-                     "and be no shorter than 4 characters but no longer than 20 characters.\n" }
+      let(:result) { "ERROR: Project name is invalid.\n"}
       project_names = ["*light*bright", "abcdefghijklmnopqrstuvwxyz", "hod"]
 
       project_names.each do |project_name|
@@ -36,10 +34,7 @@ describe Minikick do
     end
 
     context "when target amount is invalid" do
-      let(:result) { "Invalid target amount\n" \
-                     "Target amounts should only contain only dollars and cents\n" \
-                     "and should not contain a dollar sign($).\n" }
-
+      let(:result) { "ERROR: Target amount is invalid.\n"}
       target_amounts = ["10.1.1", 50.111, "$1001.11"]
 
       target_amounts.each do |target_amount|
@@ -60,10 +55,7 @@ describe Minikick do
     end
 
     context "when user name is invalid" do
-      let(:result) { "Invalid user name\n" \
-                     "User names should only contain only alphanumberic characters\n" \
-                     "and be no shorter than 4 characters but no longer than 20 characters.\n" }
-
+      let(:result) { "ERROR: User name is invalid.\n" }
       user_names = ["*light*bright", "abcdefghijklmnopqrstuvwxyz", "hod"]
 
       user_names.each do |user_name|
@@ -72,12 +64,7 @@ describe Minikick do
     end
 
     context "when credit card number is invalid" do
-      let(:result) { "Invalid credit card number\n" \
-                     "Credit card numbers must be less than characters.\n" \
-                     "Credit card numbers must be numeric.\n" \
-                     "Card numbers must be validated using Luhn-10.\n" \
-                     "Cards that have already been added will display an error.\n"}
-
+      let(:result) { "ERROR: This card is invalid.\n"}
       credit_card_numbers = [41111111111111111111, "sunshine", 123456789]
 
       credit_card_numbers.each do |credit_card_number|
@@ -86,9 +73,7 @@ describe Minikick do
     end
 
     context "when backing amount is invalid" do
-      let(:result) { "Invalid backing amount\n" \
-                     "Backing amounts should only contain only dollars and cents\n" \
-                     "and should not contain a dollar sign($).\n" }
+      let(:result) { "ERROR: Backing amount is invalid.\n" }
 
       backing_amounts = ["10.1.1", 50.111, "$1001.11"]
 

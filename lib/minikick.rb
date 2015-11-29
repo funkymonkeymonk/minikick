@@ -19,13 +19,8 @@ end
 class Minikick < Thor
   desc "project PROJECT TARGET_AMOUNT", "Create a new project"
   def project(project_name, target_amount)
-    project_name_rejected = "Invalid project name\n" \
-                            "Project names should only contain only alphanumberic characters\n" \
-                            "and be no shorter than 4 characters but no longer than 20 characters."
-
-    target_amount_rejected = "Invalid target amount\n" \
-                             "Target amounts should only contain only dollars and cents\n" \
-                             "and should not contain a dollar sign($).\n"
+    project_name_rejected = "ERROR: Project name is invalid.\n"
+    target_amount_rejected = "ERROR: Target amount is invalid.\n"
 
     if !name_valid?(project_name)
       puts(project_name_rejected)
@@ -38,19 +33,9 @@ class Minikick < Thor
 
   desc "back USER_NAME PROJECT CREDIT_CARD_NUMBER BACKING_AMOUNT", "Back a project"
   def back(user_name, project_name, credit_card_number, backing_amount)
-    user_name_rejected = "Invalid user name\n" \
-                         "User names should only contain only alphanumberic characters\n" \
-                         "and be no shorter than 4 characters but no longer than 20 characters."
-
-    backing_amount_rejected = "Invalid backing amount\n" \
-                              "Backing amounts should only contain only dollars and cents\n" \
-                              "and should not contain a dollar sign($).\n"
-
-    credit_card_number_rejected = "Invalid credit card number\n" \
-                                  "Credit card numbers must be less than characters.\n" \
-                                  "Credit card numbers must be numeric.\n" \
-                                  "Card numbers must be validated using Luhn-10.\n" \
-                                  "Cards that have already been added will display an error.\n"
+    user_name_rejected = "ERROR: User name is invalid.\n"
+    backing_amount_rejected = "ERROR: Backing amount is invalid.\n"
+    credit_card_number_rejected = "ERROR: This card is invalid.\n"
 
     if !name_valid?(user_name)
       puts(user_name_rejected)
