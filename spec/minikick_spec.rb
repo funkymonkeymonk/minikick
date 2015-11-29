@@ -24,13 +24,25 @@ describe Minikick do
       specify { expect { subject.project project_name, target_amount }.to output(result).to_stdout }
     end
 
-    context "when project name has invalid characters" do
+    context "when project name is invalid" do
       let(:result) { "Invalid project name\n" \
                      "Project names should only contain only alphanumberic characters\n" \
                      "and be no shorter than 4 characters but no longer than 20 characters.\n" }
       project_names = ["*light*bright", "abcdefghijklmnopqrstuvwxyz", "hod"]
 
       project_names.each do |project_name|
+        specify { expect { subject.project project_name, target_amount }.to output(result).to_stdout }
+      end
+    end
+
+    context "when target amount is invalid" do
+      let(:result) { "Invalid target amount\n" \
+                     "Target amounts should only contain only dollars and cents\n" \
+                     "and should not contain a dollar sign($).\n" }
+
+      target_amounts = ["10.1.1", 50.111, "$1001.11"]
+
+      target_amounts.each do |target_amount|
         specify { expect { subject.project project_name, target_amount }.to output(result).to_stdout }
       end
     end
