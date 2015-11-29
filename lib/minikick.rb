@@ -3,7 +3,17 @@ require "thor"
 class Minikick < Thor
   desc "project PROJECT TARGET_AMOUNT", "Create a new project"
   def project(project_name, target_amount)
-    puts("Added #{project_name} project with target of $#{target_amount}.")
+    project_name_regex = /\A[\w-]{4,20}\z/
+
+    rejected = "Invalid project name\n" \
+               "Project names should only contain only alphanumberic characters\n" \
+               "and be no shorter than 4 characters but no longer than 20 characters."
+
+    if project_name =~ project_name_regex
+      puts("Added #{project_name} project with target of $#{target_amount}.")
+    else
+      puts(rejected)
+    end
   end
 
   desc "back USER_NAME PROJECT CREDIT_CARD_NUMBER BACKING_AMOUNT", "Back a project"

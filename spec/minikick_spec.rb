@@ -23,6 +23,17 @@ describe Minikick do
       let(:result) { "Added #{project_name} project with target of $#{target_amount}.\n" }
       specify { expect { subject.project project_name, target_amount }.to output(result).to_stdout }
     end
+
+    context "when project name has invalid characters" do
+      let(:result) { "Invalid project name\n" \
+                     "Project names should only contain only alphanumberic characters\n" \
+                     "and be no shorter than 4 characters but no longer than 20 characters.\n" }
+      project_names = ["*light*bright", "abcdefghijklmnopqrstuvwxyz", "hod"]
+
+      project_names.each do |project_name|
+        specify { expect { subject.project project_name, target_amount }.to output(result).to_stdout }
+      end
+    end
   end
 
   describe "#back" do
@@ -41,12 +52,10 @@ describe Minikick do
     let(:project_name) { "Awesome_Sauce" }
 
     context "when project is not completely funded" do
-      let(:first_backer) { /-- John backed for $50/ }
-      let(:second_backer) { /-- Jane backed for $50/ }
-      let(:remaining) { "#{project_name} needs $400 more dollars to be successful.\n" }
-      # specify { expect { subject.list project_name}.to output(first_backer).to_stdout }
-      # specify { expect { subject.list project_name}.to output(second_backer).to_stdout }
-      specify { expect { subject.list project_name}.to output(end_with(remaining)).to_stdout }
+      let(:result) { "-- John backed for $50\n" \
+                     "-- Jane backed for $50\n" \
+                     "#{project_name} needs $400 more dollars to be successful.\n" }
+      specify { expect { subject.list project_name}.to output(end_with(result)).to_stdout }
     end
   end
   #
