@@ -1,19 +1,6 @@
 require 'rspec'
 require 'minikick'
 
-def capture(stream)
-  begin
-    stream = stream.to_s
-    eval "$#{stream} = StringIO.new"
-    yield
-    result = eval("$#{stream}").string
-  ensure
-    eval("$#{stream} = #{stream.upcase}")
-  end
-
-  result
-end
-
 describe Minikick do
   describe "#project" do
     let(:project_name) { "Awesome_Sauce" }
