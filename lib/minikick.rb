@@ -52,6 +52,12 @@ class Minikick < Thor
       # This assumes that project names are unique which is not being strictly
       # enforced
       project_id = Project.first(:name => project_name).id
+      pledge = Pledge.create(
+        :project_id => project_id,
+        :name       => project_name,
+        :amount     => backing_amount,
+        :ccn        => credit_card_number
+      )
       puts("#{user_name} backed project #{project_name} for $#{backing_amount}.")
     end
   end
