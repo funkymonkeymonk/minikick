@@ -9,3 +9,5 @@ gem 'dm-sqlite-adapter', '1.2.0'
 gem 'data_mapper', '1.2.0'
 gem 'database_cleaner', '1.5.1'
 gem 'dm-rspec', '0.3.0'
+
+gem 'require_all', '1.3.3'

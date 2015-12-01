@@ -1,6 +1,6 @@
 require "thor"
 require "luhn"
-require "minikick/projects"
+require "minikick/models"
 
 def name_valid?(name)
   name_regex = /\A[\w-]{4,20}\z/
@@ -28,7 +28,7 @@ class Minikick < Thor
     elsif !cash_amount_valid?(target_amount)
       puts(target_amount_rejected)
     else
-      project = Projects.create(
+      project = Project.create(
         :name      => project_name,
         :target_amount => target_amount
       )
@@ -49,6 +49,9 @@ class Minikick < Thor
     elsif !cash_amount_valid?(backing_amount)
       puts(backing_amount_rejected)
     else
+      # This assumes that project names are unique which is not being strictly
+      # enforced
+      project_id = Project.first(:name => project_name).id
       puts("#{user_name} backed project #{project_name} for $#{backing_amount}.")
     end
   end

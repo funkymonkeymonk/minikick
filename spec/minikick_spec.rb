@@ -48,6 +48,7 @@ describe Minikick do
     context "when all data is valid" do
       let(:result) { "#{user_name} backed project #{project_name} for $#{backing_amount}.\n" }
       it 'backs the project' do
+        subject.project(project_name, target_amount)
         expect { subject.back(user_name, project_name, credit_card_number, backing_amount) }.to \
             output(result).to_stdout
       end

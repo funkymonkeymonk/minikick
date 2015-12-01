@@ -1,4 +1,5 @@
 require "data_mapper"
+require "require_all"
 
 # Get database setup from the environment
 # Set environment to be test in the tests
@@ -12,13 +13,7 @@ else
   DataMapper.setup(:default, db_path)
 end
 
-class Projects
-  include DataMapper::Resource
-
-  property :id,             Serial,   :key => true
-  property :name,           String,   :key => true
-  property :target_amount,  Decimal,  :lazy => true
-end
+require_rel "models"
 
 DataMapper.finalize
 DataMapper.auto_upgrade!
