@@ -1,4 +1,6 @@
 require 'simplecov'
+require 'dm-rspec'
+
 SimpleCov.start
 
 RSpec.configure do |config|
@@ -9,4 +11,6 @@ RSpec.configure do |config|
   config.mock_with :rspec do |mocks|
     mocks.verify_partial_doubles = true
   end
+
+  config.include(DataMapper::Matchers)
 end

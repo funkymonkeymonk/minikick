@@ -1,5 +1,6 @@
 require "thor"
 require "luhn"
+require "minikick/projects"
 
 def name_valid?(name)
   name_regex = /\A[\w-]{4,20}\z/
@@ -27,6 +28,10 @@ class Minikick < Thor
     elsif !cash_amount_valid?(target_amount)
       puts(target_amount_rejected)
     else
+      project = Projects.create(
+        :name      => project_name,
+        :target_amount => target_amount
+      )
       puts("Added #{project_name} project with target of $#{target_amount}.")
     end
   end

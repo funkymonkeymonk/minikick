@@ -1,11 +1,25 @@
 require 'rspec'
 require 'minikick'
+require 'database_cleaner'
+
+DatabaseCleaner.strategy = :transaction
 
 describe Minikick do
-  describe "#project" do
-    let(:project_name) { "Awesome_Sauce" }
-    let(:target_amount) { 500 }
+  let(:user_name) { "John" }
+  let(:project_name) { "Awesome_Sauce" }
+  let(:credit_card_number) { "4111111111111111" }
+  let(:backing_amount) { 50 }
+  let(:target_amount) { 1000000 }
 
+  before :each do
+    DatabaseCleaner.start
+  end
+
+  after :each do
+    DatabaseCleaner.clean
+  end
+
+  describe "#project" do
     context "when all data is valid" do
       let(:result) { "Added #{project_name} project with target of $#{target_amount}.\n" }
       specify { expect { subject.project project_name, target_amount }.to output(result).to_stdout }
@@ -31,14 +45,12 @@ describe Minikick do
   end
 
   describe "#back" do
-    let(:user_name) { "John" }
-    let(:project_name) { "Awesome_Sauce" }
-    let(:credit_card_number) { "4111111111111111" }
-    let(:backing_amount) { 50 }
-
     context "when all data is valid" do
       let(:result) { "#{user_name} backed project #{project_name} for $#{backing_amount}.\n" }
-      specify { expect { subject.back user_name, project_name, credit_card_number, backing_amount }.to output(result).to_stdout }
+      it 'backs the project' do
+        expect { subject.back(user_name, project_name, credit_card_number, backing_amount) }.to \
+            output(result).to_stdout
+      end
     end
 
     context "when user name is invalid" do
@@ -71,8 +83,6 @@ describe Minikick do
   end
 
   describe "#list" do
-    let(:project_name) { "Awesome_Sauce" }
-
     context "when project is not completely funded" do
       let(:result) { "-- John backed for $50\n" \
                      "-- Jane backed for $50\n" \
@@ -82,7 +92,6 @@ describe Minikick do
   end
   #
   describe "#backer" do
-    let(:user_name) { "John" }
     let(:backed) { "-- Backed Awesome_Sauce for $50" }
     specify { expect { subject.backer user_name}.to output(backed).to_stdout }
   end
