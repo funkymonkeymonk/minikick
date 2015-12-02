@@ -54,7 +54,7 @@ class Minikick < Thor
       project_id = Project.first(:name => project_name).id
       pledge = Pledge.create(
         :project_id => project_id,
-        :name       => project_name,
+        :name       => user_name,
         :amount     => backing_amount,
         :ccn        => credit_card_number
       )
@@ -64,8 +64,9 @@ class Minikick < Thor
 
   desc "list PROJECT", "List a projects backers and backed amounts"
   def list(project_name)
-    puts("-- John backed for $50")
-    puts("-- Jane backed for $50")
+    pledges = Pledge.all(:project => { :name => project_name })
+    pledges.each { |pledge| puts "-- #{pledge.name} backed for $#{pledge.amount.to_i}" }
+
     puts("#{project_name} needs $400 more dollars to be successful.")
   end
 

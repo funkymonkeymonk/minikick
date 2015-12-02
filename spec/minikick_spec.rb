@@ -9,7 +9,8 @@ describe Minikick do
   let(:project_name) { "Awesome_Sauce" }
   let(:credit_card_number) { "4111111111111111" }
   let(:backing_amount) { 50 }
-  let(:target_amount) { 1000000 }
+  let(:target_amount) { 550 }
+
 
   before :each do
     DatabaseCleaner.start
@@ -86,9 +87,16 @@ describe Minikick do
   describe "#list" do
     context "when project is not completely funded" do
       let(:result) { "-- John backed for $50\n" \
-                     "-- Jane backed for $50\n" \
+                     "-- Jane backed for $100\n" \
                      "#{project_name} needs $400 more dollars to be successful.\n" }
-      specify { expect { subject.list project_name}.to output(end_with(result)).to_stdout }
+
+      it 'will list all backers for a project' do
+        subject.project(project_name, target_amount)
+        subject.back('John', project_name, 4111111111111111, 50)
+        subject.back('Jane', project_name, 378282246310005, 100)
+
+        expect { subject.list project_name}.to output(eq(result)).to_stdout
+      end
     end
   end
   #
