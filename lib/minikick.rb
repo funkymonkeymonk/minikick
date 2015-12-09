@@ -7,7 +7,7 @@ require "minikick/models"
 
 def display_currency num
   i = num.to_i
-  i == num ? i.to_s : format("%.2f",num)
+  i == num ? "$#{i}" : format("$%.2f",num)
 end
 
 def name_valid?(name)
@@ -78,11 +78,11 @@ class Minikick < Thor
 
     pledges.each do |pledge|
       total_pledged += pledge.amount
-      puts "-- #{pledge.name} backed for $#{display_currency(pledge.amount)}"
+      puts "-- #{pledge.name} backed for #{display_currency(pledge.amount)}"
     end
 
     if total_pledged < target_amount
-      puts("#{project_name} needs $#{display_currency(target_amount - total_pledged)} more dollars to be successful.")
+      puts("#{project_name} needs #{display_currency(target_amount - total_pledged)} more dollars to be successful.")
     else
       puts("#{project_name} is successful!")
     end
@@ -90,6 +90,11 @@ class Minikick < Thor
 
   desc "backer USER_NAME", "Display all projects and amounts a backer has backed."
   def backer(user_name)
-    print("-- Backed Awesome_Sauce for $50")
+    pledges = Pledge.all(:name => user_name)
+    pledges.each  do |pledge|
+      # TODO: This is horribly inefficent and I should rework my table structure
+      project_name = Project.first(:pledges => pledge).name
+      puts "-- Backed #{project_name} for #{display_currency(pledge.amount)}"
+    end
   end
 end

@@ -105,7 +105,14 @@ describe Minikick do
   end
   #
   describe "#backer" do
-    let(:backed) { "-- Backed Awesome_Sauce for $50" }
-    specify { expect { subject.backer user_name}.to output(backed).to_stdout }
+    it 'will list the projects a backer has backed' do
+      result = "-- Backed Awesome_Sauce for $50\n"
+      subject.project(project_name, target_amount)
+      subject.back(user_name, project_name, credit_card_number, backing_amount)
+
+      subject.back('Jane', project_name, 378282246310005, 99.10)
+
+      expect { subject.backer user_name}.to output(result).to_stdout
+    end
   end
 end
