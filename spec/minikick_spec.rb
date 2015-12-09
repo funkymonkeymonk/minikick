@@ -48,10 +48,14 @@ describe Minikick do
   describe "#back" do
     context "when all data is valid" do
       let(:result) { "#{user_name} backed project #{project_name} for $#{backing_amount}.\n" }
-      it 'backs the project' do
-        subject.project(project_name, target_amount)
-        expect { subject.back(user_name, project_name, credit_card_number, backing_amount) }.to \
-            output(result).to_stdout
+      target_amounts = [550, 50.10, 45.11]
+
+      target_amounts.each do |target_amount|
+        it "backs the project at #{target_amount}" do
+          subject.project(project_name, target_amount)
+          expect { subject.back(user_name, project_name, credit_card_number, backing_amount) }.to \
+              output(result).to_stdout
+        end
       end
     end
 
@@ -87,13 +91,13 @@ describe Minikick do
   describe "#list" do
     context "when project is not completely funded" do
       let(:result) { "-- John backed for $50\n" \
-                     "-- Jane backed for $100\n" \
-                     "#{project_name} needs $400 more dollars to be successful.\n" }
+                     "-- Jane backed for $99.10\n" \
+                     "#{project_name} needs $400.90 more dollars to be successful.\n" }
 
       it 'will list all backers for a project' do
         subject.project(project_name, target_amount)
         subject.back('John', project_name, 4111111111111111, 50)
-        subject.back('Jane', project_name, 378282246310005, 100)
+        subject.back('Jane', project_name, 378282246310005, 99.10)
 
         expect { subject.list project_name}.to output(eq(result)).to_stdout
       end

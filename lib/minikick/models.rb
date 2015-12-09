@@ -5,6 +5,9 @@ require "require_all"
 # Set environment to be test in the tests
 # add environment = dev to the container
 
+# Models will throw exceptions when they fail to save
+DataMapper::Model.raise_on_save_failure = true
+
 db_path = "sqlite3://#{Dir.home}/.minikick.db"
 
 if db_path == 'in_mem'

@@ -2,6 +2,14 @@ require "thor"
 require "luhn"
 require "minikick/models"
 
+# TODO: I need to extract all of my print statements into a logger class that
+#       can be stubbed when I'm testing.
+
+def display_currency num
+  i = num.to_i
+  i == num ? i.to_s : format("%.2f",num)
+end
+
 def name_valid?(name)
   name_regex = /\A[\w-]{4,20}\z/
   name.to_s =~ name_regex
@@ -65,9 +73,19 @@ class Minikick < Thor
   desc "list PROJECT", "List a projects backers and backed amounts"
   def list(project_name)
     pledges = Pledge.all(:project => { :name => project_name })
-    pledges.each { |pledge| puts "-- #{pledge.name} backed for $#{pledge.amount.to_i}" }
+    target_amount = Project.first(:name => project_name).target_amount
+    total_pledged = BigDecimal.new(0)
 
-    puts("#{project_name} needs $400 more dollars to be successful.")
+    pledges.each do |pledge|
+      total_pledged += pledge.amount
+      puts "-- #{pledge.name} backed for $#{display_currency(pledge.amount)}"
+    end
+
+    if total_pledged < target_amount
+      puts("#{project_name} needs $#{display_currency(target_amount - total_pledged)} more dollars to be successful.")
+    else
+      puts("#{project_name} is successful!")
+    end
   end
 
   desc "backer USER_NAME", "Display all projects and amounts a backer has backed."

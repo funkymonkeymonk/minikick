@@ -3,7 +3,8 @@ class Pledge
 
   property :id,         Serial,   :key => true
   property :name,       String
-  property :amount,     Decimal
+  # TODO: Change amount to a BigDecimal
+  property :amount,     Float
   property :ccn,        Integer,  :lazy => true
 
   belongs_to :project, :key => true

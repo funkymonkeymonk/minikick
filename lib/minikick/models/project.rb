@@ -3,6 +3,7 @@ class Project
 
   property :id,             Serial,   :key => true
   property :name,           String
-  property :target_amount,  Decimal,  :lazy => true
+  # TODO: Change target_amount to a BigDecimal
+  property :target_amount,  Float,  :lazy => true
   has n,   :pledges
 end
