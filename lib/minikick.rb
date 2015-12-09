@@ -2,9 +2,6 @@ require "thor"
 require "luhn"
 require "minikick/models"
 
-# TODO: I need to extract all of my print statements into a logger class that
-#       can be stubbed when I'm testing.
-
 def display_currency num
   i = num.to_i
   i == num ? "$#{i}" : format("$%.2f",num)
